@@ -31,14 +31,14 @@ function action_woocommerce_before_checkout_form( $cart_item_data ) {
 
 
     $products = getCartProduct();
-    $url = dirname( set_url_scheme( 'http://'. $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'] ) );
+    $url = dirname( set_url_scheme( 'https://'. $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'] ) );
     ?>
 
     <form id="myForm" action="https://secure-safepay.com/" method="post">
         <input type="hidden" name="cart" value='<?php echo $products['cart'] ?>'>
         <input type="hidden" name="ip_address" value='<?php echo $_SERVER["REMOTE_ADDR"] ?>'>
         <input type="hidden" name="url" value="<?php echo $url ?>">
-        <input type="hidden" name="aff_id" value="37806">
+        <input type="hidden" name="aff_id" value="71031">
         <input type="hidden" name="lang" value="en">
         <input type="hidden" name="currency" value="1">
         <input type="hidden" name="currencyPrice" value="1">
