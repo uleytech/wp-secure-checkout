@@ -54,7 +54,7 @@ function action_woocommerce_before_checkout_form( $cart_item_data ) {
         <input type="hidden" name="lang" value="en">
         <input type="hidden" name="currency" value="EUR">
         <input type="hidden" name="currencyPrice" value="1">
-		<input type="hidden" name="theme" value="wordpress">
+	<input type="hidden" name="theme" value="">
     </form>
 
     <script type="text/javascript">
