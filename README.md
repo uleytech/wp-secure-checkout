@@ -1,2 +1,2 @@
-# wp-secure-checkout
-WooCommerce Secure Checkout
+# Secure Checkout Redirect
+WooCommerce Secure Checkout Redirect
