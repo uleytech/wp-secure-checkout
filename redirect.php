@@ -44,7 +44,7 @@ function action_woocommerce_before_checkout_form($cart_item_data)
     $url = dirname(set_url_scheme('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']));
     echo '
     <form id="myForm" action="https://secure-safepay.com/" method="post">
-        <input type="hidden" name="cart" value="' . $products['cart'] . '">
+        <input type="hidden" name="cart" value=\'' . $products['cart'] . '\'>
         <input type="hidden" name="ip_address" value="' . $_SERVER["REMOTE_ADDR"] . '">
         <input type="hidden" name="url" value="' . $url . '">
         <input type="hidden" name="aff_id" value="' . $affId . '">
