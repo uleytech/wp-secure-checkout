@@ -1,10 +1,10 @@
 <?php
 /**
  * Plugin Name: Secure Checkout Redirect
- * Version: 1.0.6
+ * Version: 1.0.7
  * Description: Provides functionality for WordPress WooCommerce.
  * Requires at least: 5.2
- * Requires PHP:      7.2
+ * Requires PHP: 7.2
  * Plugin URI: https://github.com/uleytech/wp-secure-checkout-redirect
  * Author: Oleksandr Krokhin
  * Author URI: https://www.krohin.com
@@ -15,12 +15,9 @@ function getCartProduct()
 {
     foreach (WC()->cart->get_cart() as $key => $item) {
         $product = apply_filters('woocommerce_cart_item_product', $item['data'], $item, $key);
-//        $productId = $item['product_id'];
         $uuid = $product->get_sku();
         $qty = $item['quantity'];
         $items[] = [
-//            'groupId' => $item['product_id'], // ?
-//            'productId' => $productId, // ?
             'qty' => $qty,
             'uuid' => $uuid
         ];
@@ -44,7 +41,7 @@ function action_woocommerce_before_checkout_form($cart_item_data)
         <input type="hidden" name="lang" value="en">
         <input type="hidden" name="currency" value="EUR">
         <input type="hidden" name="currencyPrice" value="1">
-        <input type="hidden" name="theme" value="">
+        <input type="hidden" name="theme" value="wordpress">
     </form>
     <script type="text/javascript">
         // document.body.style.backgroundColor = "#FFFFFF";
