@@ -1,0 +1,15 @@
+{
+    "name": "uleytech/wp-secure-checkout-redirect",
+    "description": "WooCommerce Secure Checkout Redirect",
+    "type": "plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Oleksandr Krokhin",
+            "email": "alexander@krohin.com"
+        }
+    ],
+    "require": {
+        "erusev/parsedown": "^1.7"
+    }
+}

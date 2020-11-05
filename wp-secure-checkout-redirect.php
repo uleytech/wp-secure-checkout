@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Secure Checkout Redirect
- * Version: 1.0.7
+ * Version: 1.1.0
  * Description: Provides functionality for WordPress WooCommerce.
  * Requires at least: 5.2
  * Requires PHP: 7.2
@@ -11,8 +11,24 @@
  * License: MIT
  */
 
-function getCartProduct()
+require_once __DIR__ . '/include.php';
+require_once __DIR__ . '/update.php';
+
+
+if (is_admin()) {
+    new ScrUpdater(
+        __FILE__,
+        'uleytech',
+        "wp-secure-checkout-redirect"
+    );
+}
+
+/**
+ * @return array
+ */
+function getCartProducts(): array
 {
+    $items = [];
     foreach (WC()->cart->get_cart() as $key => $item) {
         $product = apply_filters('woocommerce_cart_item_product', $item['data'], $item, $key);
         $uuid = $product->get_sku();
@@ -23,17 +39,17 @@ function getCartProduct()
         ];
     }
     return [
-        'cart' => json_encode(['items' => $items]),
+        'cart' => json_encode(['items' => $items])
     ];
 }
 
-function action_woocommerce_before_checkout_form($cart_item_data)
+function scrRedirectForm()
 {
-    $affId = $_COOKIE['aid'];
-    $products = getCartProduct();
+    $affId = $_COOKIE['aid'] ?? '';
+    $products = getCartProducts();
     $url = dirname(set_url_scheme('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']));
     echo '
-    <form id="myForm" action="https://secure-safepay.com/" method="post">
+    <form id="myForm" action="' . SCR_REDIRECT_URL . '" method="post">
         <input type="hidden" name="cart" value=\'' . $products['cart'] . '\'>
         <input type="hidden" name="ip_address" value="' . $_SERVER["REMOTE_ADDR"] . '">
         <input type="hidden" name="url" value="' . $url . '">
@@ -44,18 +60,17 @@ function action_woocommerce_before_checkout_form($cart_item_data)
         <input type="hidden" name="theme" value="wordpress">
     </form>
     <script type="text/javascript">
-        // document.body.style.backgroundColor = "#FFFFFF";
         document.getElementById("myForm").submit();
     </script>
     ';
-
     WC()->cart->empty_cart($clear_persistent_cart = true);
 }
 
-function scr_add_script() {
+add_action('woocommerce_before_checkout_form', 'scrRedirectForm', 10);
+
+function scrAddScript()
+{
     echo '<style>main.checkout{opacity: 0;}</style>';
 }
-add_action('wp_head', 'scr_add_script');
 
-// add the action
-add_action('woocommerce_before_checkout_form', 'action_woocommerce_before_checkout_form', 10, 1);
+add_action('wp_head', 'scrAddScript');
