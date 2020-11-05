@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Secure Checkout Redirect
- * Version: 1.1.0
+ * Version: 1.1.1
  * Description: Provides functionality for WordPress WooCommerce.
  * Requires at least: 5.2
  * Requires PHP: 7.2
@@ -26,7 +26,7 @@ if (is_admin()) {
 /**
  * @return array
  */
-function getCartProducts(): array
+function scrGetCartProducts(): array
 {
     $items = [];
     foreach (WC()->cart->get_cart() as $key => $item) {
@@ -46,21 +46,21 @@ function getCartProducts(): array
 function scrRedirectForm()
 {
     $affId = $_COOKIE['aid'] ?? '';
-    $products = getCartProducts();
+    $products = scrGetCartProducts();
     $url = dirname(set_url_scheme('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']));
     echo '
-    <form id="myForm" action="' . SCR_REDIRECT_URL . '" method="post">
+    <form id="scrForm" action="' . SCR_REDIRECT_URL . '" method="' . SCR_REDIRECT_METHOD . '">
         <input type="hidden" name="cart" value=\'' . $products['cart'] . '\'>
         <input type="hidden" name="ip_address" value="' . $_SERVER["REMOTE_ADDR"] . '">
         <input type="hidden" name="url" value="' . $url . '">
         <input type="hidden" name="aff_id" value="' . $affId . '">
-        <input type="hidden" name="lang" value="en">
-        <input type="hidden" name="currency" value="EUR">
-        <input type="hidden" name="currencyPrice" value="1">
-        <input type="hidden" name="theme" value="wordpress">
+        <input type="hidden" name="lang" value="' . SCR_LANG . '">
+        <input type="hidden" name="currency" value="' . SCR_CURRENCY . '">
+        <input type="hidden" name="currencyPrice" value="' . SCR_CURRENCY_PRICE . '">
+        <input type="hidden" name="theme" value="' . SCR_THEME . '">
     </form>
     <script type="text/javascript">
-        document.getElementById("myForm").submit();
+        document.getElementById("scrForm").submit();
     </script>
     ';
     WC()->cart->empty_cart($clear_persistent_cart = true);
